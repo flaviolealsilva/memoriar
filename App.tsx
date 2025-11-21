@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Instagram, Twitter, Mail } from 'lucide-react';
+import { LogoSymbol, LogoText } from './components/Logo';
 import Hero from './components/Hero';
 import ValueProp from './components/ValueProp';
 import Features from './components/Features';
+import AiShowcase from './components/AiShowcase';
 import Roadmap from './components/Roadmap';
 import Financials from './components/Financials';
 import Waitlist from './components/Waitlist';
@@ -19,42 +21,40 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Visão', href: '#vision' },
-    { name: 'Funcionalidades', href: '#features' },
+    { name: 'IA & Veo', href: '#ai' },
     { name: 'Roadmap', href: '#roadmap' },
-    { name: 'Projeções', href: '#financials' },
+    { name: 'Investimento', href: '#financials' },
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'py-3 glass-panel border-b border-white/10 shadow-lg bg-neon-dark/80' : 'py-6 bg-transparent'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'py-3 glass-panel border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)] bg-neon-dark/90' : 'py-6 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-12">
-          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => window.scrollTo(0,0)}>
-             {/* Logo */}
-             <div className="relative w-8 h-8">
-                <div className="absolute inset-0 border-2 border-neon-cyan transform -skew-x-12 rounded-sm shadow-[0_0_10px_rgba(0,240,255,0.5)]"></div>
-                <div className="absolute inset-0 border-2 border-neon-magenta transform skew-x-12 translate-x-1 rounded-sm mix-blend-screen shadow-[0_0_10px_rgba(255,0,170,0.5)]"></div>
+          <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer group" onClick={() => window.scrollTo(0,0)}>
+             <LogoSymbol className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" />
+             <div className="hidden sm:block">
+               <LogoText />
              </div>
-            <span className="font-display font-bold text-2xl tracking-wider text-white">
-              memori<span className="text-neon-magenta neon-text-magenta">AR</span>
-            </span>
           </div>
           
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="ml-10 flex items-center space-x-8">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-gray-300 hover:text-neon-cyan transition-colors px-3 py-2 rounded-md text-sm font-medium tracking-wide hover:bg-white/5"
+                  className="text-gray-300 hover:text-neon-cyan transition-colors px-3 py-2 text-sm font-medium tracking-wide relative group overflow-hidden"
                 >
-                  {link.name}
+                  <span className="relative z-10">{link.name}</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-neon-cyan to-neon-magenta transition-all duration-300 group-hover:w-full"></span>
                 </a>
               ))}
               <a 
                 href="#waitlist"
-                className="bg-gradient-to-r from-neon-cyan to-blue-500 hover:from-neon-magenta hover:to-purple-600 text-black font-bold py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(0,240,255,0.4)]"
+                className="relative overflow-hidden bg-white text-black font-bold py-2.5 px-6 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] group"
               >
-                Acesso Beta
+                <span className="relative z-10 group-hover:text-neon-magenta transition-colors">Acesso Beta</span>
+                <div className="absolute inset-0 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
               </a>
             </div>
           </div>
@@ -72,13 +72,13 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden glass-panel border-b border-white/10 animate-in slide-in-from-top duration-200">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden glass-panel border-b border-white/10 animate-in slide-in-from-top duration-200 absolute w-full bg-black/95 backdrop-blur-xl">
+          <div className="px-4 pt-4 pb-6 space-y-2">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-white/5"
+                className="text-gray-300 hover:text-neon-cyan block px-3 py-3 rounded-md text-lg font-medium border-b border-white/5"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
@@ -87,9 +87,9 @@ const Navbar = () => {
             <a 
                 href="#waitlist"
                 onClick={() => setIsOpen(false)}
-                className="block w-full text-center bg-neon-cyan text-black font-bold py-3 rounded-md mt-4 shadow-[0_0_10px_rgba(0,240,255,0.5)]"
+                className="block w-full text-center bg-gradient-to-r from-neon-cyan to-neon-magenta text-black font-bold py-4 rounded-xl mt-6 shadow-lg"
               >
-                Acesso Beta
+                Quero Acesso Beta
               </a>
           </div>
         </div>
@@ -99,34 +99,54 @@ const Navbar = () => {
 };
 
 const Footer = () => (
-  <footer className="bg-neon-dark border-t border-white/10 py-12 relative overflow-hidden">
-    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan via-neon-magenta to-neon-purple opacity-50"></div>
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col md:flex-row justify-between items-center">
+  <footer className="bg-black border-t border-white/10 py-16 relative overflow-hidden">
+    <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neon-cyan to-transparent opacity-50"></div>
+    
+    {/* Background Glow */}
+    <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[128px] pointer-events-none"></div>
+
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="mb-8 md:mb-0 text-center md:text-left">
-          <span className="font-display font-bold text-2xl tracking-wider text-white">
-            memori<span className="text-neon-magenta">AR</span>
-          </span>
-          <p className="mt-2 text-gray-400 text-sm max-w-xs">
-            Arqueologia digital para o seu passado.
-            <br />
-            São Paulo, Brasil.
+          <div className="flex items-center gap-2 justify-center md:justify-start mb-4">
+             <LogoSymbol className="w-8 h-8" />
+             <LogoText />
+          </div>
+          <p className="mt-4 text-gray-400 text-sm max-w-xs leading-relaxed">
+            A primeira rede social focada na permanência.
+            Construímos o futuro da arqueologia digital usando Realidade Aumentada e IA Generativa.
           </p>
         </div>
         
+        <div className="grid grid-cols-2 gap-12 sm:gap-24">
+           <div>
+              <h4 className="text-white font-bold mb-4 font-display">Plataforma</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                 <li><a href="#" className="hover:text-neon-cyan transition-colors">iOS (TestFlight)</a></li>
+                 <li><a href="#" className="hover:text-neon-cyan transition-colors">Android (APK)</a></li>
+                 <li><a href="#" className="hover:text-neon-cyan transition-colors">Veo Studio</a></li>
+              </ul>
+           </div>
+           <div>
+              <h4 className="text-white font-bold mb-4 font-display">Legal</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                 <li><a href="#" className="hover:text-neon-cyan transition-colors">Privacidade (LGPD)</a></li>
+                 <li><a href="#" className="hover:text-neon-cyan transition-colors">Termos</a></li>
+                 <li><a href="#" className="hover:text-neon-cyan transition-colors">Imprensa</a></li>
+              </ul>
+           </div>
+        </div>
+
         <div className="flex space-x-6">
-          <a href="#" className="text-gray-400 hover:text-neon-cyan transition-colors transform hover:scale-110"><Instagram size={24} /></a>
-          <a href="#" className="text-gray-400 hover:text-neon-cyan transition-colors transform hover:scale-110"><Twitter size={24} /></a>
-          <a href="#" className="text-gray-400 hover:text-neon-cyan transition-colors transform hover:scale-110"><Mail size={24} /></a>
+          <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-cyan hover:border-neon-cyan hover:bg-neon-cyan/10 transition-all transform hover:-translate-y-1"><Instagram size={20} /></a>
+          <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-cyan hover:border-neon-cyan hover:bg-neon-cyan/10 transition-all transform hover:-translate-y-1"><Twitter size={20} /></a>
+          <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-cyan hover:border-neon-cyan hover:bg-neon-cyan/10 transition-all transform hover:-translate-y-1"><Mail size={20} /></a>
         </div>
       </div>
       
-      <div className="mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-        <p>&copy; 2025 memoriAR. Todos os direitos reservados.</p>
-        <div className="flex space-x-6 mt-4 md:mt-0">
-          <a href="#" className="hover:text-white transition-colors">Privacidade (LGPD)</a>
-          <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
-        </div>
+      <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+        <p>&copy; 2025 memoriAR Inc. São Paulo, Brasil.</p>
+        <p className="mt-2 md:mt-0">Feito com ⚡ e React</p>
       </div>
     </div>
   </footer>
@@ -134,11 +154,12 @@ const Footer = () => (
 
 const App = () => {
   return (
-    <div className="bg-neon-dark min-h-screen text-white selection:bg-neon-magenta selection:text-white font-sans overflow-x-hidden">
+    <div className="bg-black min-h-screen text-white selection:bg-neon-magenta selection:text-white font-sans overflow-x-hidden scroll-smooth">
       <Navbar />
       <main>
         <Hero />
         <ValueProp />
+        <AiShowcase />
         <Features />
         <Roadmap />
         <Financials />
