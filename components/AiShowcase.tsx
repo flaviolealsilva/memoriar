@@ -14,10 +14,42 @@ const AiShowcase = () => {
 
   return (
     <section className="py-32 bg-black relative overflow-hidden min-h-screen flex items-center">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-neon-dark to-black z-0"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] opacity-20 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(189,0,255,0.15)_0%,transparent_70%)]"></div>
+      {/* --- Dynamic Living Backgrounds --- */}
+      <div className="absolute inset-0 bg-black z-0">
+        {/* Moving Gradient Nebulas */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1], 
+            rotate: [0, 90, 0],
+            opacity: [0.2, 0.4, 0.2] 
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-0 right-0 w-[800px] h-[800px] bg-neon-purple/20 rounded-full blur-[120px] mix-blend-screen"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2], 
+            rotate: [0, -90, 0],
+            opacity: [0.2, 0.4, 0.2] 
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-neon-cyan/10 rounded-full blur-[120px] mix-blend-screen"
+        />
+        
+        {/* Digital Rain / Particles */}
+        <div className="absolute inset-0 opacity-20">
+            {[...Array(20)].map((_, i) => (
+                <div 
+                    key={i}
+                    className="absolute w-[1px] h-[50px] bg-gradient-to-b from-transparent via-neon-cyan to-transparent"
+                    style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animation: `particle-drift ${5 + Math.random() * 5}s infinite linear`
+                    }}
+                ></div>
+            ))}
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={containerRef}>
@@ -26,16 +58,16 @@ const AiShowcase = () => {
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.1)]"
           >
             <Sparkles className="w-4 h-4 text-yellow-400 animate-pulse" />
             <span className="text-sm font-mono text-gray-300">Powered by Google Veo</span>
           </motion.div>
           
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
-            Dê vida às suas <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-neon-magenta">Memórias Estáticas</span>
+          <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6 drop-shadow-2xl">
+            Dê vida às suas <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-neon-magenta animate-pulse">Memórias Estáticas</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
             Não apenas guarde uma foto. Nossa IA generativa analisa o contexto e cria 
             movimento cinematográfico, transformando instantes congelados em cenas vivas.
           </p>
@@ -46,17 +78,20 @@ const AiShowcase = () => {
           {/* Interface Simulation */}
           <motion.div 
             style={{ y, opacity }}
-            className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(189,0,255,0.15)] bg-gray-900/50 backdrop-blur-xl aspect-video group"
+            className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(189,0,255,0.2)] bg-gray-900/50 backdrop-blur-xl aspect-video group"
           >
              {/* Background Image (The "Memory") */}
              <img 
                src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
                alt="Static Memory" 
-               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110 opacity-60"
+               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110 opacity-70 mix-blend-lighten"
              />
 
+             {/* Scanline Effect Overlay */}
+             <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
+
              {/* UI Overlay */}
-             <div className="absolute inset-0 flex flex-col justify-between p-8">
+             <div className="absolute inset-0 flex flex-col justify-between p-8 z-20">
                 <div className="flex justify-between items-start">
                     <div className="bg-black/60 backdrop-blur px-4 py-2 rounded-lg border border-white/10 flex items-center gap-2">
                         <Video size={16} className="text-neon-cyan" />
@@ -68,8 +103,8 @@ const AiShowcase = () => {
                     </div>
                 </div>
 
-                {/* Scanning Effect */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-neon-cyan/50 shadow-[0_0_20px_#00f0ff] animate-[scan_3s_ease-in-out_infinite]"></div>
+                {/* Scanning Effect Beam */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-neon-cyan/50 shadow-[0_0_20px_#00f0ff] animate-[scan_3s_ease-in-out_infinite] opacity-50"></div>
 
                 {/* Controls */}
                 <div className="bg-black/80 backdrop-blur rounded-xl p-4 border border-white/10 flex items-center gap-4">
@@ -77,7 +112,7 @@ const AiShowcase = () => {
                         <Play size={20} fill="black" />
                     </button>
                     <div className="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-neon-cyan to-neon-magenta w-2/3"></div>
+                        <div className="h-full bg-gradient-to-r from-neon-cyan to-neon-magenta w-2/3 animate-[pulse_2s_infinite]"></div>
                     </div>
                     <span className="text-xs font-mono text-gray-400">00:12 / 00:30</span>
                 </div>
@@ -105,14 +140,14 @@ const AiShowcase = () => {
                  initial={{ x: 50, opacity: 0 }}
                  whileInView={{ x: 0, opacity: 1 }}
                  transition={{ delay: i * 0.2 }}
-                 className="flex gap-6 group"
+                 className="flex gap-6 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5"
                >
-                 <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-neon-magenta/20 group-hover:border-neon-magenta transition-all">
+                 <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-neon-magenta/20 group-hover:border-neon-magenta transition-all shadow-[0_0_0_0_rgba(255,0,170,0)] group-hover:shadow-[0_0_15px_rgba(255,0,170,0.3)]">
                     <span className="font-display font-bold text-white group-hover:text-neon-magenta">{i + 1}</span>
                  </div>
                  <div>
                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-neon-cyan transition-colors">{item.title}</h3>
-                   <p className="text-gray-400 leading-relaxed">{item.desc}</p>
+                   <p className="text-gray-400 leading-relaxed group-hover:text-gray-300">{item.desc}</p>
                  </div>
                </motion.div>
              ))}

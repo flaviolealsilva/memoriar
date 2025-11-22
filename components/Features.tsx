@@ -57,7 +57,7 @@ const TiltCard = ({ feature, index }: { feature: any, index: number }) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       onMouseMove={onMouseMove}
-      className="group relative h-full rounded-2xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors duration-300"
+      className="group relative h-full rounded-2xl bg-black/40 border border-white/10 hover:border-neon-cyan/30 transition-colors duration-300 backdrop-blur-sm overflow-hidden"
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
@@ -65,21 +65,21 @@ const TiltCard = ({ feature, index }: { feature: any, index: number }) => {
           background: useMotionTemplate`
             radial-gradient(
               650px circle at ${mouseX}px ${mouseY}px,
-              rgba(0, 240, 255, 0.15),
+              rgba(0, 240, 255, 0.1),
               transparent 80%
             )
           `,
         }}
       />
       <div className="relative h-full p-8 flex flex-col">
-        <div className="w-12 h-12 rounded-lg bg-black border border-white/10 flex items-center justify-center mb-6 group-hover:border-neon-cyan group-hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all duration-500">
+        <div className="w-12 h-12 rounded-lg bg-black border border-white/10 flex items-center justify-center mb-6 group-hover:border-neon-cyan group-hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all duration-500 z-10">
           <feature.icon className="text-gray-400 group-hover:text-neon-cyan transition-colors" size={24} />
         </div>
         
-        <h3 className="text-xl font-bold text-white mb-3 font-display group-hover:text-neon-cyan transition-colors">
+        <h3 className="text-xl font-bold text-white mb-3 font-display group-hover:text-neon-cyan transition-colors z-10">
           {feature.title}
         </h3>
-        <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+        <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors z-10">
           {feature.description}
         </p>
       </div>
@@ -90,13 +90,19 @@ const TiltCard = ({ feature, index }: { feature: any, index: number }) => {
 const Features = () => {
   return (
     <section id="features" className="py-32 bg-black relative overflow-hidden">
+      {/* Moving Grid Background */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden perspective-[500px]">
+        <div className="absolute inset-0 bg-[linear-gradient(transparent_1px,_#111_1px),_linear-gradient(90deg,transparent_1px,_#111_1px)] bg-[size:40px_40px] [transform:rotateX(60deg)] animate-[moving-grid_20s_linear_infinite] shadow-[0_0_50px_rgba(0,240,255,0.2)_inset]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_80%)]"></div>
+      </div>
+
       {/* Background Elements */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-cyan/5 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-neon-magenta/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-cyan/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-neon-magenta/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" style={{animationDelay: '2s'}}></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold font-display mb-6 text-white">
+          <h2 className="text-4xl md:text-5xl font-bold font-display mb-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
             O Sistema <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-magenta">memoriAR</span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">

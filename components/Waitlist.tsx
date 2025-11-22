@@ -17,15 +17,32 @@ const Waitlist = () => {
   return (
     <section id="waitlist" className="py-32 bg-black relative overflow-hidden">
       {/* Glowing Orb Background */}
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[800px] h-[800px] bg-neon-purple/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:24px_24px] opacity-20"></div>
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[800px] h-[800px] bg-neon-purple/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+      
+      {/* Warp Speed / Starfield Effect */}
+      <div className="absolute inset-0 z-0 opacity-30">
+        {[...Array(50)].map((_, i) => (
+             <div 
+                key={i}
+                className="absolute bg-white rounded-full"
+                style={{
+                    width: Math.random() * 2 + 'px',
+                    height: Math.random() * 2 + 'px',
+                    top: Math.random() * 100 + '%',
+                    left: Math.random() * 100 + '%',
+                    opacity: Math.random(),
+                    animation: `float ${10 + Math.random() * 20}s linear infinite`
+                }}
+             ></div>
+        ))}
+      </div>
 
       <div className="max-w-4xl mx-auto px-4 relative z-10 text-center">
-        <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 border border-white/10 text-neon-cyan text-xs font-bold uppercase tracking-widest mb-8">
+        <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 border border-white/10 text-neon-cyan text-xs font-bold uppercase tracking-widest mb-8 backdrop-blur-md">
             Beta Fechado
         </div>
         
-        <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-white">
+        <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-white drop-shadow-lg">
           Redescubra o seu mundo.
         </h2>
         <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -49,7 +66,7 @@ const Waitlist = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com"
                 required
-                className="w-full bg-white/5 border border-white/20 rounded-xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all text-lg"
+                className="w-full bg-white/5 border border-white/20 rounded-xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all text-lg backdrop-blur-sm"
                 />
             </div>
             <button 

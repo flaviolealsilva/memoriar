@@ -5,65 +5,59 @@ export const LogoSymbol = ({ className = "w-10 h-10" }: { className?: string }) 
   <div className={`${className} relative flex items-center justify-center`}>
     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full overflow-visible">
       <defs>
-        <filter id="glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+        <filter id="glow-cyan-strong" x="-100%" y="-100%" width="300%" height="300%">
           <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+          <feFlood floodColor="#00f0ff" floodOpacity="0.8" result="glowColor" />
+          <feComposite in="glowColor" in2="coloredBlur" operator="in" result="softGlow_colored" />
           <feMerge>
-            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="softGlow_colored" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        <filter id="glow-magenta" x="-50%" y="-50%" width="200%" height="200%">
+        <filter id="glow-magenta-strong" x="-100%" y="-100%" width="300%" height="300%">
           <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+          <feFlood floodColor="#ff00aa" floodOpacity="0.8" result="glowColor" />
+          <feComposite in="glowColor" in2="coloredBlur" operator="in" result="softGlow_colored" />
           <feMerge>
-            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="softGlow_colored" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        <linearGradient id="grad-symbol" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#00f0ff" />
-          <stop offset="100%" stopColor="#ff00aa" />
-        </linearGradient>
       </defs>
       
-      {/* The 'A' / Left part - Cyan */}
+      {/* 
+        GEOMETRIA EXATA DA IMAGEM:
+        1. Traço Ciano: Sobe da esquerda inferior, forma o pico do A, desce até o meio formando o vale (M shape start).
+        2. Traço Magenta: Começa conectado ao topo do Ciano, faz a volta do R, conecta no vale do Ciano, desce a perna.
+      */}
+
+      {/* CYAN PART: The "A" / Left side of "M" */}
       <motion.path
-        d="M 15 85 L 40 15 L 55 55"
+        d="M 15 90 L 40 20 L 65 85"
         stroke="#00f0ff"
         strokeWidth="8"
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter="url(#glow-cyan)"
+        filter="url(#glow-cyan-strong)"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
       />
       
-      {/* The 'R' / Right part - Magenta */}
+      {/* MAGENTA PART: The "R" Loop and Leg */}
+      {/* Starts near the top of the A (40,20), loops right, connects to the A's crossbar area (approx 52, 52), then leg down */}
       <motion.path
-        d="M 55 55 L 85 55 C 95 55 95 25 85 25 L 40 25"
+        d="M 40 20 L 75 20 C 90 20 90 50 75 50 L 52 50 L 85 90"
         stroke="#ff00aa"
         strokeWidth="8"
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter="url(#glow-magenta)"
-        pathLength="1"
-        strokeDasharray="1 1"
+        filter="url(#glow-magenta-strong)"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
+        transition={{ duration: 1.5, delay: 0.3, ease: "easeInOut" }}
       />
       
-      {/* The Leg of R */}
-      <motion.path
-        d="M 70 55 L 90 85"
-        stroke="#ff00aa"
-        strokeWidth="8"
-        strokeLinecap="round"
-        filter="url(#glow-magenta)"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 1.5 }}
-      />
     </svg>
   </div>
 );

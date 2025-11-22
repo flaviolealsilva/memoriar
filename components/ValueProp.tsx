@@ -8,9 +8,12 @@ const ComparisonCard = ({ title, icon: Icon, text, isHighlight = false, delay }:
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.6, delay }}
-    className={`p-6 rounded-2xl border ${isHighlight ? 'bg-gradient-to-b from-neon-surface to-black border-neon-magenta/40 shadow-[0_0_30px_rgba(189,0,255,0.05)] hover:border-neon-magenta/70' : 'bg-neon-surface border-white/5 hover:border-white/20'} flex flex-col h-full transition-all duration-300`}
+    className={`p-6 rounded-2xl border backdrop-blur-sm z-10 relative overflow-hidden group h-full transition-all duration-300 ${isHighlight ? 'bg-gradient-to-b from-neon-surface/80 to-black/80 border-neon-magenta/40 hover:border-neon-magenta/70 shadow-[0_0_30px_rgba(189,0,255,0.05)]' : 'bg-neon-surface/60 border-white/5 hover:border-white/20'}`}
   >
-    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${isHighlight ? 'bg-neon-magenta/10 text-neon-magenta' : 'bg-gray-800 text-gray-400'}`}>
+    {/* Subtle inner glow on hover */}
+    <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-cyan/5 to-neon-cyan/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+
+    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${isHighlight ? 'bg-neon-magenta/10 text-neon-magenta shadow-[0_0_15px_rgba(255,0,170,0.2)]' : 'bg-gray-800 text-gray-400'}`}>
       <Icon size={24} />
     </div>
     <h3 className="text-xl font-bold mb-2 font-display text-white">{title}</h3>
@@ -20,15 +23,37 @@ const ComparisonCard = ({ title, icon: Icon, text, isHighlight = false, delay }:
 
 const ValueProp = () => {
   return (
-    <section id="vision" className="py-24 bg-black relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="vision" className="py-24 bg-black relative overflow-hidden">
+      {/* Dynamic Aurora Background */}
+      <div className="absolute inset-0 bg-aurora opacity-30 z-0"></div>
+      
+      {/* Floating Particles */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 bg-white rounded-full opacity-10"
+          initial={{ x: Math.random() * 1000, y: Math.random() * 800 }}
+          animate={{ 
+            y: [0, -100, 0],
+            x: [0, 50, 0],
+            opacity: [0.1, 0.3, 0.1] 
+          }}
+          transition={{ 
+            duration: 10 + Math.random() * 10, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+        />
+      ))}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-display text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-display text-white drop-shadow-lg">
             Não apenas uma alternativa.<br/>
             <span className="text-neon-cyan neon-text-cyan">Um Antídoto.</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-300 max-w-2xl mx-auto text-lg shadow-black drop-shadow-md">
             Redes sociais atuais são palcos para performance. O memoriAR é um cofre para o que realmente importa.
           </p>
         </div>
@@ -64,12 +89,14 @@ const ValueProp = () => {
           />
         </div>
 
-        <div className="mt-24 p-8 md:p-12 glass-panel rounded-3xl border border-white/10 relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-96 h-96 bg-neon-cyan/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="mt-24 p-8 md:p-12 glass-panel rounded-3xl border border-white/10 relative overflow-hidden backdrop-blur-xl">
+             {/* Animated Glow behind card */}
+             <div className="absolute top-[-50%] right-[-20%] w-[600px] h-[600px] bg-neon-cyan/10 rounded-full blur-[100px] animate-pulse-slow pointer-events-none"></div>
+             
              <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
                  <div>
                      <h3 className="text-2xl font-bold font-display mb-4 text-white">A Guerra pela Atenção acabou.</h3>
-                     <p className="text-gray-400 mb-6 text-lg">
+                     <p className="text-gray-300 mb-6 text-lg">
                          O Instagram foca na performance e na efemeridade ("Olhe o que estou fazendo agora"). 
                          O memoriAR foca na nostalgia e reflexão ("Redescubra quem você era").
                      </p>
@@ -87,15 +114,17 @@ const ValueProp = () => {
                  </div>
                  <div className="h-64 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl flex items-center justify-center border border-white/5 shadow-2xl relative overflow-hidden group">
                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                     <div className="absolute inset-0 bg-gradient-to-t from-neon-cyan/10 to-transparent"></div>
+                     
                      {/* Abstract visualization of 'The Moat' */}
                      <div className="text-center relative z-10">
                          <motion.div 
                             initial={{ scale: 0.9 }}
                             whileInView={{ scale: 1.1 }}
-                            transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
                             className="mb-2"
                          >
-                             <Shield size={48} className="text-neon-cyan mx-auto" />
+                             <Shield size={48} className="text-neon-cyan mx-auto drop-shadow-[0_0_15px_rgba(0,240,255,0.8)]" />
                          </motion.div>
                          <p className="text-neon-cyan font-display text-4xl font-bold mb-2 text-shadow-lg">PVU</p>
                          <p className="text-sm text-gray-400 uppercase tracking-widest">Proposição de Valor Única</p>
