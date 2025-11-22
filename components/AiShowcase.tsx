@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sparkles, Play, Video, Wand2 } from 'lucide-react';
+import { Sparkles, Play, Video, Wand2, Scan } from 'lucide-react';
 
 const AiShowcase = () => {
   const containerRef = useRef(null);
@@ -13,7 +13,7 @@ const AiShowcase = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.8, 1], [0, 1, 1, 0]);
 
   return (
-    <section className="py-32 bg-black relative overflow-hidden min-h-screen flex items-center">
+    <section id="ai" className="py-32 bg-black relative overflow-hidden min-h-screen flex items-center">
       {/* --- Dynamic Living Backgrounds --- */}
       <div className="absolute inset-0 bg-black z-0">
         {/* Moving Gradient Nebulas */}
@@ -36,25 +36,31 @@ const AiShowcase = () => {
           className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-neon-cyan/10 rounded-full blur-[120px] mix-blend-screen"
         />
         
-        {/* Digital Rain / Particles */}
-        <div className="absolute inset-0 opacity-20">
-            {[...Array(20)].map((_, i) => (
+        {/* Matrix / Digital Rain Effect */}
+        <div className="absolute inset-0 opacity-30">
+            {[...Array(30)].map((_, i) => (
                 <div 
                     key={i}
-                    className="absolute w-[1px] h-[50px] bg-gradient-to-b from-transparent via-neon-cyan to-transparent"
+                    className="absolute w-[2px] h-[60px] bg-gradient-to-b from-transparent via-neon-cyan to-transparent"
                     style={{
                         left: `${Math.random() * 100}%`,
                         top: `${Math.random() * 100}%`,
-                        animation: `particle-drift ${5 + Math.random() * 5}s infinite linear`
+                        animation: `particle-drift ${3 + Math.random() * 5}s infinite linear`,
+                        opacity: Math.random() * 0.5
                     }}
                 ></div>
             ))}
         </div>
+
+        {/* Grid Overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={containerRef}>
         
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-neon-purple/5 blur-[100px] -z-10"></div>
+          
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -90,6 +96,13 @@ const AiShowcase = () => {
              {/* Scanline Effect Overlay */}
              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
 
+             {/* Intelligent Scan Overlay */}
+             <motion.div 
+               className="absolute inset-0 bg-neon-cyan/5 z-10"
+               animate={{ opacity: [0, 0.2, 0] }}
+               transition={{ duration: 3, repeat: Infinity }}
+             ></motion.div>
+
              {/* UI Overlay */}
              <div className="absolute inset-0 flex flex-col justify-between p-8 z-20">
                 <div className="flex justify-between items-start">
@@ -105,6 +118,13 @@ const AiShowcase = () => {
 
                 {/* Scanning Effect Beam */}
                 <div className="absolute top-0 left-0 w-full h-2 bg-neon-cyan/50 shadow-[0_0_20px_#00f0ff] animate-[scan_3s_ease-in-out_infinite] opacity-50"></div>
+                
+                {/* Target Reticle */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-white/30 rounded-lg flex items-center justify-center animate-pulse">
+                   <div className="w-full h-[1px] bg-white/30"></div>
+                   <div className="h-full w-[1px] bg-white/30 absolute"></div>
+                   <Scan size={24} className="text-white/50" />
+                </div>
 
                 {/* Controls */}
                 <div className="bg-black/80 backdrop-blur rounded-xl p-4 border border-white/10 flex items-center gap-4">

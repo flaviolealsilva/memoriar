@@ -27,19 +27,38 @@ const ValueProp = () => {
       {/* Dynamic Aurora Background */}
       <div className="absolute inset-0 bg-aurora opacity-30 z-0"></div>
       
-      {/* Floating Particles */}
-      {[...Array(5)].map((_, i) => (
+      {/* Floating Particles Layer 1 */}
+      {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 bg-white rounded-full opacity-10"
+          className="absolute w-1 h-1 bg-neon-cyan rounded-full opacity-20"
+          initial={{ x: Math.random() * 1000, y: Math.random() * 800 }}
+          animate={{ 
+            y: [0, -150, 0],
+            x: [0, 100, 0],
+            opacity: [0, 0.5, 0] 
+          }}
+          transition={{ 
+            duration: 15 + Math.random() * 10, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+        />
+      ))}
+      
+      {/* Floating Particles Layer 2 (Magenta) */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={`m-${i}`}
+          className="absolute w-2 h-2 bg-neon-magenta rounded-full opacity-10 blur-[1px]"
           initial={{ x: Math.random() * 1000, y: Math.random() * 800 }}
           animate={{ 
             y: [0, -100, 0],
-            x: [0, 50, 0],
+            scale: [1, 1.5, 1],
             opacity: [0.1, 0.3, 0.1] 
           }}
           transition={{ 
-            duration: 10 + Math.random() * 10, 
+            duration: 20 + Math.random() * 10, 
             repeat: Infinity, 
             ease: "linear" 
           }}
