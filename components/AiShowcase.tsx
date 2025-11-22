@@ -15,51 +15,51 @@ const AiShowcase = () => {
   return (
     <section id="ai" className="py-32 bg-black relative overflow-hidden min-h-screen flex items-center">
       {/* --- Dynamic Living Backgrounds --- */}
-      <div className="absolute inset-0 bg-black z-0">
-        {/* Moving Gradient Nebulas */}
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1], 
-            rotate: [0, 90, 0],
-            opacity: [0.2, 0.4, 0.2] 
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-[800px] h-[800px] bg-neon-purple/20 rounded-full blur-[120px] mix-blend-screen"
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1.2, 1, 1.2], 
-            rotate: [0, -90, 0],
-            opacity: [0.2, 0.4, 0.2] 
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-neon-cyan/10 rounded-full blur-[120px] mix-blend-screen"
-        />
-        
-        {/* Matrix / Digital Rain Effect */}
-        <div className="absolute inset-0 opacity-30">
-            {[...Array(30)].map((_, i) => (
-                <div 
-                    key={i}
-                    className="absolute w-[2px] h-[60px] bg-gradient-to-b from-transparent via-neon-cyan to-transparent"
-                    style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        animation: `particle-drift ${3 + Math.random() * 5}s infinite linear`,
-                        opacity: Math.random() * 0.5
-                    }}
-                ></div>
-            ))}
-        </div>
+      
+      {/* 1. Moving Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-purple-900/40 bg-[length:400%_400%] animate-gradient-x z-0"></div>
 
-        {/* Grid Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]"></div>
+      {/* 2. Floating Particles (Fireflies) */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {[...Array(25)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-neon-cyan mix-blend-screen"
+            initial={{
+              x: Math.random() * 100 + "%",
+              y: Math.random() * 100 + "%",
+              opacity: 0,
+              scale: 0
+            }}
+            animate={{
+              y: [null, Math.random() * -100], // Float Upwards
+              x: [null, (Math.random() - 0.5) * 50], // Drift Sideways
+              opacity: [0, 0.6, 0],
+              scale: [0, Math.random() * 1.5, 0]
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10, // Slow, organic movement
+              repeat: Infinity,
+              ease: "linear",
+              delay: Math.random() * 5
+            }}
+            style={{
+              width: Math.random() * 3 + 1 + "px",
+              height: Math.random() * 3 + 1 + "px",
+              filter: "blur(1px)"
+            }}
+          />
+        ))}
       </div>
+
+      {/* 3. Subtle Grid Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)] z-0"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={containerRef}>
         
         <div className="text-center mb-16 relative">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-neon-purple/5 blur-[100px] -z-10"></div>
+          {/* Glow behind text */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-neon-purple/10 blur-[80px] -z-10"></div>
           
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
