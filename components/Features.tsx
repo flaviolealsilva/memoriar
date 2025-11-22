@@ -35,7 +35,7 @@ const features = [
   }
 ];
 
-const TiltCard = ({ feature, index }: { feature: any, index: number }) => {
+const TiltCard = ({ feature, index }: { feature: any; index: number; key?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
