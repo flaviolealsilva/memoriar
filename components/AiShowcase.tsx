@@ -1,9 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sparkles, Play, Video, Wand2, Scan } from 'lucide-react';
+import { Sparkles, Play, Pause, Video, Wand2, Scan } from 'lucide-react';
+import videoSrc from '../vid/vid.mp4';
 
 const AiShowcase = () => {
   const containerRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
@@ -11,6 +15,17 @@ const AiShowcase = () => {
 
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.8, 1], [0, 1, 1, 0]);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   return (
     <section id="ai" className="py-32 bg-black relative overflow-hidden min-h-screen flex items-center">
@@ -86,53 +101,71 @@ const AiShowcase = () => {
             style={{ y, opacity }}
             className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(189,0,255,0.2)] bg-gray-900/50 backdrop-blur-xl aspect-video group"
           >
-             {/* Background Image (The "Memory") */}
-             <img 
-               src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
-               alt="Static Memory" 
-               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110 opacity-70 mix-blend-lighten"
+             {/* Video Player */}
+             <video 
+               ref={videoRef}
+               src={videoSrc}
+               className="absolute inset-0 w-full h-full object-cover"
+               loop
+               muted={false}
+               playsInline
+               onEnded={() => setIsPlaying(false)}
              />
 
-             {/* Scanline Effect Overlay */}
-             <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
+             {/* Scanline Effect Overlay (Visible only when paused) */}
+             {!isPlaying && (
+               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
+             )}
 
-             {/* Intelligent Scan Overlay */}
-             <motion.div 
-               className="absolute inset-0 bg-neon-cyan/5 z-10"
-               animate={{ opacity: [0, 0.2, 0] }}
-               transition={{ duration: 3, repeat: Infinity }}
-             ></motion.div>
+             {/* Intelligent Scan Overlay (Visible only when paused) */}
+             {!isPlaying && (
+               <motion.div 
+                 className="absolute inset-0 bg-neon-cyan/5 z-10"
+                 animate={{ opacity: [0, 0.2, 0] }}
+                 transition={{ duration: 3, repeat: Infinity }}
+               ></motion.div>
+             )}
 
              {/* UI Overlay */}
-             <div className="absolute inset-0 flex flex-col justify-between p-8 z-20">
+             <div className="absolute inset-0 flex flex-col justify-between p-8 z-20 pointer-events-none">
                 <div className="flex justify-between items-start">
-                    <div className="bg-black/60 backdrop-blur px-4 py-2 rounded-lg border border-white/10 flex items-center gap-2">
+                    {/* Top Left Info */}
+                    <div className={`bg-black/60 backdrop-blur px-4 py-2 rounded-lg border border-white/10 flex items-center gap-2 transition-opacity duration-500 ${isPlaying ? 'opacity-0' : 'opacity-100'}`}>
                         <Video size={16} className="text-neon-cyan" />
                         <span className="text-xs font-mono text-white">RAW_INPUT.JPG</span>
                     </div>
-                    <div className="bg-neon-magenta/20 backdrop-blur px-4 py-2 rounded-lg border border-neon-magenta/50 flex items-center gap-2 animate-pulse">
+                    
+                    {/* Top Right Status */}
+                    <div className={`bg-neon-magenta/20 backdrop-blur px-4 py-2 rounded-lg border border-neon-magenta/50 flex items-center gap-2 animate-pulse transition-opacity duration-500 ${isPlaying ? 'opacity-0' : 'opacity-100'}`}>
                         <Wand2 size={16} className="text-neon-magenta" />
                         <span className="text-xs font-mono text-white">PROCESSANDO VEO...</span>
                     </div>
                 </div>
 
                 {/* Scanning Effect Beam */}
-                <div className="absolute top-0 left-0 w-full h-2 bg-neon-cyan/50 shadow-[0_0_20px_#00f0ff] animate-[scan_3s_ease-in-out_infinite] opacity-50"></div>
+                {!isPlaying && (
+                  <div className="absolute top-0 left-0 w-full h-2 bg-neon-cyan/50 shadow-[0_0_20px_#00f0ff] animate-[scan_3s_ease-in-out_infinite] opacity-50"></div>
+                )}
                 
                 {/* Target Reticle */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-white/30 rounded-lg flex items-center justify-center animate-pulse">
-                   <div className="w-full h-[1px] bg-white/30"></div>
-                   <div className="h-full w-[1px] bg-white/30 absolute"></div>
-                   <Scan size={24} className="text-white/50" />
-                </div>
+                {!isPlaying && (
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-white/30 rounded-lg flex items-center justify-center animate-pulse">
+                     <div className="w-full h-[1px] bg-white/30"></div>
+                     <div className="h-full w-[1px] bg-white/30 absolute"></div>
+                     <Scan size={24} className="text-white/50" />
+                  </div>
+                )}
 
                 {/* Controls */}
-                <div className="bg-black/80 backdrop-blur rounded-xl p-4 border border-white/10 flex items-center gap-4">
-                    <button className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
-                        <Play size={20} fill="black" />
+                <div className="bg-black/80 backdrop-blur rounded-xl p-4 border border-white/10 flex items-center gap-4 pointer-events-auto">
+                    <button 
+                      onClick={togglePlay}
+                      className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+                    >
+                        {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" />}
                     </button>
                     <div className="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-neon-cyan to-neon-magenta w-2/3 animate-[pulse_2s_infinite]"></div>
+                        <div className={`h-full bg-gradient-to-r from-neon-cyan to-neon-magenta w-2/3 ${isPlaying ? 'animate-[pulse_2s_infinite]' : ''}`}></div>
                     </div>
                     <span className="text-xs font-mono text-gray-400">00:12 / 00:30</span>
                 </div>
